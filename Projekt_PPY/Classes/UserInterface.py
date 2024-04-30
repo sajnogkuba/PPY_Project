@@ -24,10 +24,9 @@ class UserInterface:
          isCorrectSelection(user_input: int): Checks if the user's choice is valid.
          selectAction() -> int: Prompts the user to select an action and validates it.
      """
-    actions_count = int()
     ACTIONS = {1: "Add Task", 2: "Delete Task", 3: "Edit Task", 4: "Filter Tasks", 5: "View all Tasks"}
 
-    def __init__(self, actions_count: int) -> None:
+    def __init__(self, actions_count: int):
         """
         Initializes a new UserInterface instance with a specified number of actions.
 
