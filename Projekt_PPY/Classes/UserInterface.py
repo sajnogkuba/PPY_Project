@@ -9,6 +9,7 @@ def printWelcomeMessage() -> None:
     print("\n ================================== TASKS MANAGER ==================================")
     print("   Welcome to Task Management System! An application to help you manage your tasks.")
     print(" ===================================================================================")
+    pass
 
 
 class UserInterface:
@@ -48,15 +49,17 @@ class UserInterface:
             raise InvalidDateError(f"Invalid selection: you can chose from 1 to {self.actions_count}")
         pass
 
-    def selectAction(self) -> int:
+    def selectAction(self, file: str) -> int:
         """
         Prompts the user to select an action from the available options and validates the selection
+        Parameters:
+            file (str): The path to the file with tasks which is selected at this moment
         Returns:
             int: The validated action number chosen by the user
         Raises:
             InvalidDateError: If the input is not a valid integer or out of the allowed range.
         """
-        print("\n   What would you like to do?")
+        print(f"\n   Working on: {file}\n   What would you like to do?")
         for action_number in range(1, self.actions_count + 1):
             print(f"\t{action_number}. {self.ACTIONS[action_number]}")
         try:
