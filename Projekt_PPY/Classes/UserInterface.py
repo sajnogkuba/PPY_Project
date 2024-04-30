@@ -53,7 +53,7 @@ class UserInterface:
             raise InvalidDateError(f"Invalid selection: you can chose from 1 to {self.actions_count}")
         pass
 
-    def selectAction(self, file: str) -> int:
+    def selectAction(self, file: str) -> Actions:
         """
         Prompts the user to select an action from the available options and validates the selection
         Parameters:
@@ -74,5 +74,5 @@ class UserInterface:
                 raise InvalidDateError(f"Invalid selection: you can chose numbers from 1 to {self.actions_count}")
         except InvalidDateError as e:
             print(e)
-            return self.selectAction()
-        return user_input
+            return self.selectAction(file)
+        return Actions(user_input)
