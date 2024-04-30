@@ -1,4 +1,5 @@
 from Exceptions.InvalidDateError import InvalidDateError
+from Enums.Actions import Actions
 
 
 def printWelcomeMessage() -> None:
@@ -25,16 +26,19 @@ class UserInterface:
          isCorrectSelection(user_input: int): Checks if the user's choice is valid.
          selectAction() -> int: Prompts the user to select an action and validates it.
      """
-    ACTIONS = {1: "Add Task", 2: "Delete Task", 3: "Edit Task", 4: "Filter Tasks", 5: "View all Tasks"}
+    ACTIONS = {Actions.ADD_TASK.value: "Add Task",
+               Actions.DELETE_TASK.value: "Delete Task",
+               Actions.EDIT_TASK.value: "Edit Task",
+               Actions.FILTER_TASKS.value: "Filter Tasks",
+               Actions.VIEW_TASKS.value: "View all Tasks",
+               Actions.CHANGE_FILE.value: "Change File",
+               Actions.EXIT.value: "Exit"}
 
-    def __init__(self, actions_count: int):
+    def __init__(self):
         """
         Initializes a new UserInterface instance with a specified number of actions.
-
-        Parameters:
-            actions_count (int): The number of actions that users can choose from.
         """
-        self.actions_count = actions_count
+        self.actions_count = len(self.ACTIONS)
         pass
 
     def isCorrectSelection(self, user_input: int) -> None:
