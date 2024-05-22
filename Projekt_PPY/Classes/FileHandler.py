@@ -11,7 +11,7 @@ class FileHandler:
     def GetFilesFromRootDirectory(self) -> list:
         file_paths = []
         for file in os.listdir(self.root_path):
-            file_paths.append(self.root_path + file)
+            file_paths.append(self.root_path + "/"+  file)
         return file_paths
 
     def SelectFile(self):
