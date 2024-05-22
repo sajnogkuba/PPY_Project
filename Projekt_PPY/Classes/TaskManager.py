@@ -5,6 +5,7 @@ from datetime import datetime
 from Classes.Task import Task
 from Enums.Priority import Priority, getAllPriorities
 from Exceptions.InvalidDateError import InvalidDateError
+from Exceptions.InvalidSelectError import InvalidSelectError
 
 
 def generateManagersForAllFilesInDir(directory) -> dict:
@@ -73,8 +74,8 @@ class TaskManager:
                 input_number = int(input(f"   Enter priority number 1-{len(priorities)}: "))
                 return Priority(input_number)
             except ValueError:
-                raise InvalidDateError(f"   Invalid priority number. Please try again")
-        except InvalidDateError as e:
+                raise InvalidSelectError(f"   Invalid priority number. Please try again")
+        except InvalidSelectError as e:
             print(e)
             return self.choosePriority()
 

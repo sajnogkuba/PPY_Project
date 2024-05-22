@@ -1,6 +1,7 @@
 import os
 
 from Exceptions.InvalidDateError import InvalidDateError
+from Exceptions.InvalidSelectError import InvalidSelectError
 
 
 class FileHandler:
@@ -23,10 +24,10 @@ class FileHandler:
             try:
                 user_input = int(input("   Type number of file: "))
                 if user_input < 1 or user_input > len(files):
-                    raise InvalidDateError(f"Invalid selection: you can chose numbers from 1 to {len(files)}")
+                    raise InvalidSelectError(f"   Invalid selection: you can chose numbers from 1 to {len(files)}")
                 self.file = files[user_input-1]
             except ValueError:
-                raise InvalidDateError(f"Invalid selection: you can chose numbers from 1 to {len(files)}")
-        except InvalidDateError as e:
+                raise InvalidSelectError(f"   Invalid selection: you can chose numbers from 1 to {len(files)}")
+        except InvalidSelectError as e:
             print(e)
             return self.SelectFile()

@@ -1,5 +1,6 @@
 from Exceptions.InvalidDateError import InvalidDateError
 from Enums.Actions import Actions
+from Exceptions.InvalidSelectError import InvalidSelectError
 
 
 def printWelcomeMessage() -> None:
@@ -50,7 +51,7 @@ class UserInterface:
             InvalidDateError: If the input is not a valid action number.
         """
         if user_input not in self.ACTIONS:
-            raise InvalidDateError(f"Invalid selection: you can chose from 1 to {self.actions_count}")
+            raise InvalidSelectError(f"Invalid selection: you can chose from 1 to {self.actions_count}")
         pass
 
     def selectAction(self, file: str) -> Actions:
@@ -71,8 +72,8 @@ class UserInterface:
                 user_input = int(input("   Type number of action: "))
                 self.isCorrectSelection(user_input)
             except ValueError:
-                raise InvalidDateError(f"Invalid selection: you can chose numbers from 1 to {self.actions_count}")
-        except InvalidDateError as e:
+                raise InvalidSelectError(f"Invalid selection: you can chose numbers from 1 to {self.actions_count}")
+        except InvalidSelectError as e:
             print(e)
             return self.selectAction(file)
         return Actions(user_input)
