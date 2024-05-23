@@ -3,6 +3,7 @@ from datetime import datetime
 
 from Classes.Task import Task
 from Enums.Priority import Priority, getAllPriorities
+from Enums.Status import getAllStatuses, Status
 from Exceptions.InvalidDateError import InvalidDateError
 from Exceptions.InvalidSelectError import InvalidSelectError
 
@@ -27,8 +28,8 @@ class TaskManager:
         description = input("   Enter task description: ")
         priority = self.choosePriority()
         deadline = self.inputDeadline()
-        completed = False
-        task = Task(name, description, priority, deadline, completed)
+        status = self.selectStatus()
+        task = Task(name, description, priority, deadline, status)
         self.tasks.append(task)
         pass
 
@@ -79,6 +80,7 @@ class TaskManager:
                     new_description = input("   Enter task description: ")
                     new_priority = self.choosePriority()
                     new_deadline = self.inputDeadline()
+                    new_status = self.selectStatus()
                     if new_name == "":
                         new_name = self.tasks[input_number - 1].name
                     if new_description == "":
@@ -87,7 +89,8 @@ class TaskManager:
                         new_priority = self.tasks[input_number - 1].priority
                     if new_deadline == "":
                         new_deadline = self.tasks[input_number - 1].deadline
-                    new_status = self.tasks[input_number - 1].completed
+                    if new_status == "":
+                        new_status = self.tasks[input_number - 1].status
                     self.tasks[input_number - 1] = Task(new_name, new_description, new_priority, new_deadline, new_status)
                 except InvalidSelectError as e:
                     print(f"   {e.message}. Please try again.")
@@ -156,4 +159,22 @@ class TaskManager:
             return self.inputDeadline()
 
         return date_obj
+        pass
+
+    def selectStatus(self):
+        statuses = getAllStatuses()
+        for status in statuses:
+            print(f"   {status.value}. {status.name}")
+        try:
+            try:
+                input_text = input(f"   Enter status number 1-{len(statuses)}: ")
+                if input_text == "":
+                    return input_text
+                input_number = int(input_text)
+                return Status(input_number)
+            except ValueError:
+                raise InvalidSelectError(f"   Invalid status number. Please try again")
+        except InvalidSelectError as e:
+            print(e)
+            return self.selectStatus()
         pass
