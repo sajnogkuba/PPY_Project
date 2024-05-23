@@ -33,6 +33,9 @@ class TaskManager:
         deadline = self.inputDeadline()
         status = self.selectStatus()
         task = Task(name, description, priority, category, deadline, status)
+        if name == "" or description == "" or priority == "" or category == "" or deadline == "" or status == "":
+            print("    Invalid data. Try again")
+            return self.addTask()
         self.tasks.append(task)
         pass
 
@@ -104,11 +107,11 @@ class TaskManager:
                         new_name, new_description, new_priority, new_category, new_deadline, new_status
                     )
                     self.tasks[input_number - 1].created_at = created_at
-                except InvalidSelectError as e:
-                    print(f"   {e.message}. Please try again.")
-                    return self.editTask()
+                except ValueError as e:
+                    return
             except InvalidSelectError as e:
                 print(e)
+                print(f"   {e.message}. Please try again.")
                 return self.choosePriority()
         pass
         pass
