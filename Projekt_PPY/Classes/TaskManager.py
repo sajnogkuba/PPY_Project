@@ -191,7 +191,7 @@ class TaskManager:
         return date_obj
         pass
 
-    def selectStatus(self):
+    def selectStatus(self) -> Status:
         statuses = getAllStatuses()
         for status in statuses:
             print(f"   {status.value}. {status.name}")
@@ -261,3 +261,31 @@ class TaskManager:
                 result.append(task)
         return result
         pass
+
+    def changeTaskStatus(self):
+        print("\n ---------------------------------------------------------------------------------------")
+        print(f"                            Changing task status in file: {self.file}")
+        print(" ---------------------------------------------------------------------------------------")
+        if not self.tasks:
+            print("   No tasks yet, first add at least one task")
+        else:
+            for i in range(1, len(self.tasks) + 1):
+                print(f"    {i}. {self.tasks[i - 1]}")
+            try:
+                try:
+                    input_number = int(input(f"   Enter task number 1-{len(self.tasks)}: "))
+                    if input_number < 1 or input_number > len(self.tasks):
+                        raise InvalidSelectError(
+                            f"   Invalid selection: you can chose numbers from 1 to {len(self.tasks)}"
+                        )
+                    new_status = self.selectStatus()
+                    self.tasks[input_number - 1].status = new_status
+                    if new_status == Status.COMPLETED:
+                        self.tasks[input_number - 1].completed_at = datetime.now()
+                except InvalidSelectError as e:
+                    print(f"   {e.message}. Please try again.")
+                    return self.deleteTask()
+            except InvalidSelectError as e:
+                print(e)
+                return self.choosePriority()
+

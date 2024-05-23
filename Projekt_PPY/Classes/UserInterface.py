@@ -32,6 +32,8 @@ class UserInterface:
                Actions.EDIT_TASK.value: "Edit Task",
                Actions.FILTER_TASKS.value: "Filter Tasks",
                Actions.VIEW_TASKS.value: "View all Tasks",
+               Actions.CHANGES_TASK_STATUS.value: "Change task status",
+               Actions.SHOW_STATISTICS.value: "Show statistics",
                Actions.CHANGE_FILE.value: "Change File",
                Actions.EXIT.value: "Exit"}
 
