@@ -1,5 +1,6 @@
 import os
 from datetime import datetime, timedelta
+from typing import Any
 
 from Classes.FileHandler import FileHandler
 from Classes.Task import Task
@@ -10,6 +11,15 @@ from Exceptions.InvalidSelectError import InvalidSelectError
 
 
 def generateManagersForAllFilesInDir(directory) -> dict:
+    """
+     Generates TaskManager instances for all files in the specified directory.
+
+     Args:
+         directory (str): Path to the directory containing files.
+
+     Returns:
+         dict: Dictionary mapping file paths to TaskManager instances.
+     """
     managers = dict()
     for file in os.listdir(directory):
         managers[directory + '/' + file] = TaskManager(file)
@@ -17,12 +27,31 @@ def generateManagersForAllFilesInDir(directory) -> dict:
 
 
 class TaskManager:
+    """
+    Manages tasks within a file.
+
+    Attributes:
+        file (str): Path to the file managed by this TaskManager.
+        tasks (list): List of tasks managed by this TaskManager.
+    """
+
     def __init__(self, file):
+        """
+        Initializes an instance of TaskManager.
+
+        Args:
+            file (str): Path to the file managed by this TaskManager.
+        """
         self.file = file
         self.tasks = list()
 
     def addTask(self):
-        # TODO if something == "" try again.
+        """
+        Adds a new task to the TaskManager.
+
+        Returns:
+            None
+        """
         print("\n ---------------------------------------------------------------------------------------")
         print(f"                            Adding new task to file: {self.file}")
         print(" ---------------------------------------------------------------------------------------")
@@ -40,6 +69,12 @@ class TaskManager:
         pass
 
     def deleteTask(self):
+        """
+            Deletes a task from the TaskManager.
+
+            Returns:
+                None
+            """
         print("\n ---------------------------------------------------------------------------------------")
         print(f"                            Deleting task from file: {self.file}")
         print(" ---------------------------------------------------------------------------------------")
@@ -65,6 +100,12 @@ class TaskManager:
         pass
 
     def editTask(self):
+        """
+        Edits a task in the TaskManager.
+
+        Returns:
+            None
+        """
         print("\n ---------------------------------------------------------------------------------------")
         print(f"                            Editing task from file: {self.file}")
         print(" ---------------------------------------------------------------------------------------")
@@ -107,7 +148,7 @@ class TaskManager:
                         new_name, new_description, new_priority, new_category, new_deadline, new_status
                     )
                     self.tasks[input_number - 1].created_at = created_at
-                except ValueError as e:
+                except ValueError:
                     return
             except InvalidSelectError as e:
                 print(e)
@@ -117,6 +158,13 @@ class TaskManager:
         pass
 
     def filterTasks(self):
+        """
+        Filters tasks in the TaskManager.
+
+        Returns:
+            None
+        """
+        result = list()
         print("\n ---------------------------------------------------------------------------------------")
         print(f"                            Filtering tasks in file: {self.file}")
         print(" ---------------------------------------------------------------------------------------")
@@ -142,6 +190,12 @@ class TaskManager:
         pass
 
     def viewTasks(self):
+        """
+        Displays tasks in the TaskManager.
+
+        Returns:
+            None
+        """
         print("\n ---------------------------------------------------------------------------------------")
         print(f"                            Tasks in file: {self.file}")
         print(" ---------------------------------------------------------------------------------------")
@@ -153,6 +207,12 @@ class TaskManager:
         pass
 
     def inputNameCreate(self) -> str:
+        """
+        Prompts the user to input a task name.
+
+        Returns:
+            str: The name of the task.
+        """
         name = input("   Enter name: ")
         for task in self.tasks:
             if task.name == name:
@@ -161,7 +221,13 @@ class TaskManager:
         return name
         pass
 
-    def choosePriority(self) -> Priority:
+    def choosePriority(self) -> str | Priority:
+        """
+        Prompts the user to choose a priority level.
+
+        Returns:
+            Priority: The chosen priority level.
+        """
         priorities = getAllPriorities()
         for priority in priorities:
             print(f"   {priority.value}. {priority.name}")
@@ -178,7 +244,13 @@ class TaskManager:
             print(e)
             return self.choosePriority()
 
-    def inputDeadline(self) -> datetime:
+    def inputDeadline(self) -> str | datetime:
+        """
+        Prompts the user to input a deadline for a task.
+
+        Returns:
+            datetime: The deadline for the task.
+        """
         try:
             input_date_str = input("   Enter the deadline (DD-MM-YYYY): ")
             if input_date_str == "":
@@ -197,7 +269,13 @@ class TaskManager:
         return date_obj
         pass
 
-    def selectStatus(self) -> Status:
+    def selectStatus(self) -> str | Status:
+        """
+        Prompts the user to select a status for a task.
+
+        Returns:
+            Status: The selected status.
+        """
         statuses = getAllStatuses()
         for status in statuses:
             print(f"   {status.value}. {status.name}")
@@ -216,6 +294,12 @@ class TaskManager:
         pass
 
     def selectFiterOption(self) -> int:
+        """
+        Prompts the user to select a filter option.
+
+        Returns:
+            int: The selected filter option.
+        """
         print("   1. Priority")
         print("   2. Complete date")
         print("   3. Status")
@@ -224,7 +308,7 @@ class TaskManager:
                 input_number = int(input("   What do you want to filter by? "))
             except ValueError:
                 raise InvalidSelectError(f"You have to choose number from 1 to 3")
-            if input_number not in range(1,4):
+            if input_number not in range(1, 4):
                 raise InvalidSelectError(f"You have to choose number from 1 to 3")
             return input_number
         except InvalidSelectError as e:
@@ -233,6 +317,12 @@ class TaskManager:
         pass
 
     def filterByPriority(self) -> list:
+        """
+        Filters tasks by priority.
+
+        Returns:
+            list: Filtered list of tasks.
+        """
         result = list()
         priority = self.choosePriority()
         for task in self.tasks:
@@ -242,6 +332,12 @@ class TaskManager:
         pass
 
     def filterByCompleteDate(self) -> list:
+        """
+        Filters tasks by completion date.
+
+        Returns:
+            list: Filtered list of tasks.
+        """
         result = list()
         date_format = "%d-%m-%Y"
         input_date_str = input("   Enter the date (DD-MM-YYYY): ")
@@ -260,6 +356,12 @@ class TaskManager:
         pass
 
     def filterByStatus(self) -> list:
+        """
+        Filters tasks by status.
+
+        Returns:
+            list: Filtered list of tasks.
+        """
         result = list()
         status = self.selectStatus()
         for task in self.tasks:
@@ -269,6 +371,12 @@ class TaskManager:
         pass
 
     def changeTaskStatus(self):
+        """
+        Changes the status of a task.
+
+        Returns:
+            None
+        """
         print("\n ---------------------------------------------------------------------------------------")
         print(f"                            Changing task status in file: {self.file}")
         print(" ---------------------------------------------------------------------------------------")
@@ -296,6 +404,12 @@ class TaskManager:
                 return self.choosePriority()
 
     def showStatistics(self):
+        """
+        Displays statistics for tasks.
+
+        Returns:
+            None
+        """
         print("\n ---------------------------------------------------------------------------------------")
         print(f"                            Statistics for file: {self.file}")
         print(" ---------------------------------------------------------------------------------------")
@@ -304,7 +418,13 @@ class TaskManager:
         print(f"   - Percentage distribution of priorities: {self.calculatePrioritiesDistribution()}")
         pass
 
-    def calculateAvgCompletionTime(self) -> float:
+    def calculateAvgCompletionTime(self) -> str | timedelta | float | Any:
+        """
+        Calculates the average completion time for tasks.
+
+        Returns:
+            float: Average completion time.
+        """
         time_deltas = list()
         for task in self.tasks:
             if task.status == Status.COMPLETED:
@@ -315,6 +435,12 @@ class TaskManager:
         pass
 
     def calculatePercentOfTasksCompletedOnTime(self):
+        """
+        Calculates the percentage of tasks completed on time.
+
+        Returns:
+            str: Percentage of tasks completed on time.
+        """
         count_of_tasks_completed_on_time = 0
         count_of_tasks = 0
         for task in self.tasks:
@@ -328,6 +454,12 @@ class TaskManager:
         pass
 
     def calculatePrioritiesDistribution(self) -> str:
+        """
+        Calculates the distribution of priorities for tasks.
+
+        Returns:
+            str: Distribution of priorities.
+        """
         priorities_count = {Priority.HIGH: 0, Priority.NORMAL: 0, Priority.LOW: 0}
         for task in self.tasks:
             priorities_count[task.priority] += 1
@@ -336,8 +468,17 @@ class TaskManager:
                 f" High: {round((priorities_count[Priority.LOW] / len(self.tasks) * 100), 2)}%")
         pass
 
-    def loadTasks(self, dir):
-        file_handler = FileHandler(dir + '/' + self.file)
+    def loadTasks(self, directory):
+        """
+        Loads tasks from a file.
+
+        Args:
+            directory (str): Directory path containing the file.
+
+        Returns:
+            None
+        """
+        file_handler = FileHandler(directory + '/' + self.file)
         file_content = file_handler.loadContent()
         lines = file_content.split('\n')
         lines.remove("")
@@ -362,5 +503,3 @@ class TaskManager:
                 new_task.completed_at = completed_at
                 tasks.append(new_task)
             self.tasks = tasks
-
-
