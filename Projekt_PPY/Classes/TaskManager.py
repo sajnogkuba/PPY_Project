@@ -1,5 +1,4 @@
 import os
-from asyncio import tasks
 from datetime import datetime
 
 from Classes.Task import Task
@@ -24,7 +23,7 @@ class TaskManager:
         print("\n ---------------------------------------------------------------------------------------")
         print(f"                            Adding new task to file: {self.file}")
         print(" ---------------------------------------------------------------------------------------")
-        name = self.inputName()
+        name = self.inputNameCreate()
         description = input("   Enter task description for new task: ")
         priority = self.choosePriority()
         deadline = self.inputDeadline()
@@ -34,7 +33,28 @@ class TaskManager:
         pass
 
     def deleteTask(self):
-        # TODO
+        print("\n ---------------------------------------------------------------------------------------")
+        print(f"                            Deleting task from file: {self.file}")
+        print(" ---------------------------------------------------------------------------------------")
+        if not self.tasks:
+            print("   No tasks yet, first add at least one task")
+        else:
+            for i in range(1, len(self.tasks) + 1):
+                print(f"    {i}. {self.tasks[i - 1]}")
+            try:
+                try:
+                    input_number = int(input(f"   Enter task number 1-{len(self.tasks)}: "))
+                    if input_number < 1 or input_number > len(self.tasks):
+                        raise InvalidSelectError(
+                            f"   Invalid selection: you can chose numbers from 1 to {len(self.tasks)}"
+                        )
+                    self.tasks.pop(input_number - 1)
+                except InvalidSelectError as e:
+                    print(f"   {e.message}. Please try again.")
+                    return self.deleteTask()
+            except InvalidSelectError as e:
+                print(e)
+                return self.choosePriority()
         pass
 
     def editTask(self):
@@ -56,12 +76,12 @@ class TaskManager:
                 print(f"    - {task}")
         pass
 
-    def inputName(self) -> str:
+    def inputNameCreate(self) -> str:
         name = input("   Enter name for new task: ")
         for task in self.tasks:
             if task.name == name:
                 print("  Task already exists, please try another name")
-                return self.inputName()
+                return self.inputNameCreate()
         return name
         pass
 

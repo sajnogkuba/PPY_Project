@@ -17,11 +17,10 @@ while not stop:
     selected_action = user_interface.selectAction(current_file)
     match selected_action:
         case Actions.ADD_TASK:
-            # TODO implement methods to add tasks
             managers[current_file].addTask()
             pass
         case Actions.DELETE_TASK:
-            # TODO implement methods to delete tasks
+            managers[current_file].deleteTask()
             pass
         case Actions.EDIT_TASK:
             # TODO implement methods to edit tasks
@@ -30,7 +29,6 @@ while not stop:
             # TODO implement methods to filter tasks
             pass
         case Actions.VIEW_TASKS:
-            # TODO implement methods to view tasks
             managers[current_file].viewTasks()
             pass
         case Actions.CHANGE_FILE:
