@@ -125,6 +125,7 @@ class TaskManager:
                 case 2:
                     pass
                 case 3:
+                    result = self.filterByStatus()
                     pass
             if not result:
                 print("   No tasks to print.")
@@ -229,6 +230,15 @@ class TaskManager:
         priority = self.choosePriority()
         for task in self.tasks:
             if task.priority == priority:
+                result.append(task)
+        return result
+        pass
+
+    def filterByStatus(self) -> list:
+        result = list()
+        status = self.selectStatus()
+        for task in self.tasks:
+            if task.status == status:
                 result.append(task)
         return result
         pass
