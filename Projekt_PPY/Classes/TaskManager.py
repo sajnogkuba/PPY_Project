@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from Classes.Task import Task
 from Enums.Priority import Priority, getAllPriorities
@@ -288,4 +288,45 @@ class TaskManager:
             except InvalidSelectError as e:
                 print(e)
                 return self.choosePriority()
+
+    def showStatistics(self):
+        print("\n ---------------------------------------------------------------------------------------")
+        print(f"                            Statistics for file: {self.file}")
+        print(" ---------------------------------------------------------------------------------------")
+        print(f"   - Average time of task completion: {self.calculateAvgCompletionTime()}")
+        print(f"   - Percentage of tasks completed on time: {self.calculatePercentOfTasksCompletedOnTime()}")
+        print(f"   - Percentage distribution of priorities: {self.calculatePrioritiesDistribution()}")
+        pass
+
+    def calculateAvgCompletionTime(self) -> float:
+        time_deltas = list()
+        for task in self.tasks:
+            if task.status == Status.COMPLETED:
+                time_deltas.append(task.completed_at - task.created_at)
+        if len(time_deltas) == 0:
+            return "No tasks completed"
+        return (sum(time_deltas, timedelta())) / len(time_deltas)
+        pass
+
+    def calculatePercentOfTasksCompletedOnTime(self):
+        count_of_tasks_completed_on_time = 0
+        count_of_tasks = 0
+        for task in self.tasks:
+            if task.status == Status.COMPLETED:
+                count_of_tasks += 1
+                if task.completed_at < task.deadline:
+                    count_of_tasks_completed_on_time += 1
+        if count_of_tasks_completed_on_time == 0:
+            return "No tasks completed"
+        return f"{round((count_of_tasks_completed_on_time / count_of_tasks) * 100, 2)}%"
+        pass
+
+    def calculatePrioritiesDistribution(self) -> str:
+        priorities_count = {Priority.HIGH: 0, Priority.NORMAL: 0, Priority.LOW: 0}
+        for task in self.tasks:
+            priorities_count[task.priority] += 1
+        return (f" High: {round((priorities_count[Priority.HIGH] / len(self.tasks) * 100), 2)}%"
+                f" Normal: {round((priorities_count[Priority.NORMAL] / len(self.tasks) * 100), 2)}%"
+                f" High: {round((priorities_count[Priority.LOW] / len(self.tasks) * 100), 2)}%")
+        pass
 

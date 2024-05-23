@@ -34,6 +34,9 @@ while not stop:
         case Actions.CHANGES_TASK_STATUS:
             managers[current_file].changeTaskStatus()
             pass
+        case Actions.SHOW_STATISTICS:
+            managers[current_file].showStatistics()
+            pass
         case Actions.CHANGE_FILE:
             file_handler.SelectFile()
             current_file = file_handler.file
