@@ -14,11 +14,14 @@ class Task:
         self.status = status
         self.created_at = datetime.datetime.now()
         self.completed_at = '-'
+        if status == Status.COMPLETED:
+            self.completed_at = datetime.datetime.now()
 
     def __str__(self):
         return (f'Name: {self.name},'
                 f' Description: {self.description},'
                 f' Priority: {self.priority.name}, '
+                f' Category: {self.category}'
                 f' Deadline: {self.deadline}' 
                 f' Status: {self.status.name}'
                 f' Created at: {self.created_at}'

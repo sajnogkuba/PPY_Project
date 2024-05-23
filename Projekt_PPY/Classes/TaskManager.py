@@ -27,9 +27,10 @@ class TaskManager:
         name = self.inputNameCreate()
         description = input("   Enter task description: ")
         priority = self.choosePriority()
+        category = input("   Enter task category: ")
         deadline = self.inputDeadline()
         status = self.selectStatus()
-        task = Task(name, description, priority, deadline, status)
+        task = Task(name, description, priority, category, deadline, status)
         self.tasks.append(task)
         pass
 
@@ -91,7 +92,9 @@ class TaskManager:
                         new_deadline = self.tasks[input_number - 1].deadline
                     if new_status == "":
                         new_status = self.tasks[input_number - 1].status
+                    created_at = self.tasks[input_number - 1].created_at
                     self.tasks[input_number - 1] = Task(new_name, new_description, new_priority, new_deadline, new_status)
+                    self.tasks[input_number - 1].created_at = created_at
                 except InvalidSelectError as e:
                     print(f"   {e.message}. Please try again.")
                     return self.editTask()
@@ -102,7 +105,14 @@ class TaskManager:
         pass
 
     def filterTasks(self):
-        # TODO
+        print("\n ---------------------------------------------------------------------------------------")
+        print(f"                            Filtering tasks in file: {self.file}")
+        print(" ---------------------------------------------------------------------------------------")
+        if not self.tasks:
+            print("   No tasks yet, first add at least one task")
+        else:
+            selected_filtering_option = self.selectFiterOption()
+
         pass
 
     def viewTasks(self):
@@ -177,4 +187,21 @@ class TaskManager:
         except InvalidSelectError as e:
             print(e)
             return self.selectStatus()
+        pass
+
+    def selectFiterOption(self) -> int:
+        print("   1. Priority")
+        print("   2. Complete date")
+        print("   3. Status")
+        try:
+            try:
+                input_number = int(input("   What do you want to filter by? "))
+            except ValueError:
+                raise InvalidSelectError(f"You have to choose number from 1 to 3")
+            if input_number not in range(1,4):
+                raise InvalidSelectError(f"You have to choose number from 1 to 3")
+            return input_number
+        except InvalidSelectError as e:
+            print(f"   {e.message}. Please try again.")
+            return self.selectFiterOption()
         pass

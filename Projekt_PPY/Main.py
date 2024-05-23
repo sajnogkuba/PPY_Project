@@ -26,7 +26,7 @@ while not stop:
             managers[current_file].editTask()
             pass
         case Actions.FILTER_TASKS:
-            # TODO implement methods to filter tasks
+            managers[current_file].filterTasks()
             pass
         case Actions.VIEW_TASKS:
             managers[current_file].viewTasks()
