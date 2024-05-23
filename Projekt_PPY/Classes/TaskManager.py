@@ -76,6 +76,8 @@ class TaskManager:
                         raise InvalidSelectError(
                             f"   Invalid selection: you can chose numbers from 1 to {len(self.tasks)}"
                         )
+                    if self.tasks[input_number - 1].status == Status.COMPLETED:
+                        raise InvalidSelectError("   Invalid selection: you try to edit completed task")
                     print(f"   Please type in new data for task: {self.tasks[input_number - 1]}"
                           f". If you don't want to change something don't type anything and pres enter")
                     new_name = self.inputNameCreate()
