@@ -10,3 +10,21 @@ class Status(Enum):
 
 def getAllStatuses():
     return list(Status)
+
+
+def getStatusByName(name):
+    match name:
+        case "TO_DO":
+            return Status.TO_DO
+            pass
+        case "IN_PROGRESS":
+            return Status.IN_PROGRESS
+            pass
+        case "TESTING":
+            return Status.TESTING
+            pass
+        case "COMPLETED":
+            return Status.COMPLETED
+            pass
+
+

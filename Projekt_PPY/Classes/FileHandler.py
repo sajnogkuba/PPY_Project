@@ -37,3 +37,7 @@ class FileHandler:
             for task in tasks:
                 file.write(str(task) + '\n')
         pass
+
+    def loadContent(self):
+        with open(self.root_path, 'r') as file:
+            return file.read()

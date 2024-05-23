@@ -5,6 +5,9 @@ from Classes.TaskManager import TaskManager, generateManagersForAllFilesInDir
 
 TASK_FILES_DIR = "TaskFiles"
 managers = generateManagersForAllFilesInDir(TASK_FILES_DIR)
+for manager in managers.values():
+    manager.loadTasks(TASK_FILES_DIR)
+
 file_handler = FileHandler(TASK_FILES_DIR)
 user_interface = UserInterface()
 

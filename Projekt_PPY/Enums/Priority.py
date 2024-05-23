@@ -9,3 +9,16 @@ class Priority(Enum):
 
 def getAllPriorities():
     return list(Priority)
+
+
+def getPriorityByName(name):
+    match name:
+        case "HIGH":
+            return Priority.HIGH
+            pass
+        case "NORMAL":
+            return Priority.NORMAL
+            pass
+        case "LOW":
+            return Priority.LOW
+            pass

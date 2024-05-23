@@ -1,9 +1,10 @@
 import os
 from datetime import datetime, timedelta
 
+from Classes.FileHandler import FileHandler
 from Classes.Task import Task
-from Enums.Priority import Priority, getAllPriorities
-from Enums.Status import getAllStatuses, Status
+from Enums.Priority import Priority, getAllPriorities, getPriorityByName
+from Enums.Status import getAllStatuses, Status, getStatusByName
 from Exceptions.InvalidDateError import InvalidDateError
 from Exceptions.InvalidSelectError import InvalidSelectError
 
@@ -331,4 +332,32 @@ class TaskManager:
                 f" Normal: {round((priorities_count[Priority.NORMAL] / len(self.tasks) * 100), 2)}%"
                 f" High: {round((priorities_count[Priority.LOW] / len(self.tasks) * 100), 2)}%")
         pass
+
+    def loadTasks(self, dir):
+        file_handler = FileHandler(dir + '/' + self.file)
+        file_content = file_handler.loadContent()
+        lines = file_content.split('\n')
+        lines.remove("")
+        if len(lines) == 0:
+            self.tasks = list()
+        else:
+            tasks = list()
+            for line in lines:
+                words = line.split()
+                name = words[1]
+                description = words[3]
+                priority = getPriorityByName(words[5])
+                category = words[7]
+                deadline = datetime.strptime(words[9] + " " + words[10], "%Y-%m-%d %H:%M:%S")
+                status = getStatusByName(words[12])
+                crated_at = datetime.strptime(words[14] + " " + words[15], "%Y-%m-%d %H:%M:%S.%f")
+                completed_at = words[17]
+                if completed_at != '-':
+                    completed_at = datetime.strptime(words[17] + " " + words[18], "%Y-%m-%d %H:%M:%S.%f")
+                new_task = Task(name, description, priority, category, deadline, status)
+                new_task.created_at = crated_at
+                new_task.completed_at = completed_at
+                tasks.append(new_task)
+            self.tasks = tasks
+
 
