@@ -21,6 +21,7 @@ class TaskManager:
         self.tasks = list()
 
     def addTask(self):
+        # TODO if something == "" try again.
         print("\n ---------------------------------------------------------------------------------------")
         print(f"                            Adding new task to file: {self.file}")
         print(" ---------------------------------------------------------------------------------------")
@@ -80,10 +81,13 @@ class TaskManager:
                     new_name = self.inputNameCreate()
                     new_description = input("   Enter task description: ")
                     new_priority = self.choosePriority()
+                    new_category = input("   Enter task category: ")
                     new_deadline = self.inputDeadline()
                     new_status = self.selectStatus()
                     if new_name == "":
                         new_name = self.tasks[input_number - 1].name
+                    if new_category == "":
+                        new_category = self.tasks[input_number - 1].category
                     if new_description == "":
                         new_description = self.tasks[input_number - 1].description
                     if new_priority == "":
@@ -93,7 +97,9 @@ class TaskManager:
                     if new_status == "":
                         new_status = self.tasks[input_number - 1].status
                     created_at = self.tasks[input_number - 1].created_at
-                    self.tasks[input_number - 1] = Task(new_name, new_description, new_priority, new_deadline, new_status)
+                    self.tasks[input_number - 1] = Task(
+                        new_name, new_description, new_priority, new_category, new_deadline, new_status
+                    )
                     self.tasks[input_number - 1].created_at = created_at
                 except InvalidSelectError as e:
                     print(f"   {e.message}. Please try again.")
@@ -112,7 +118,19 @@ class TaskManager:
             print("   No tasks yet, first add at least one task")
         else:
             selected_filtering_option = self.selectFiterOption()
-
+            match selected_filtering_option:
+                case 1:
+                    result = self.filterByPriority()
+                    pass
+                case 2:
+                    pass
+                case 3:
+                    pass
+            if not result:
+                print("   No tasks to print.")
+            else:
+                for task in result:
+                    print(f"   - {task}")
         pass
 
     def viewTasks(self):
@@ -204,4 +222,13 @@ class TaskManager:
         except InvalidSelectError as e:
             print(f"   {e.message}. Please try again.")
             return self.selectFiterOption()
+        pass
+
+    def filterByPriority(self) -> list:
+        result = list()
+        priority = self.choosePriority()
+        for task in self.tasks:
+            if task.priority == priority:
+                result.append(task)
+        return result
         pass
