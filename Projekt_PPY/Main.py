@@ -38,9 +38,10 @@ while not stop:
             managers[current_file].showStatistics()
             pass
         case Actions.CHANGE_FILE:
+            file_handler.saveFile(managers[current_file].tasks)
             file_handler.SelectFile()
             current_file = file_handler.file
         case Actions.EXIT:
-            # TODO Add methods to save files when exit
+            file_handler.saveFile(managers[current_file].tasks)
             stop = True
 

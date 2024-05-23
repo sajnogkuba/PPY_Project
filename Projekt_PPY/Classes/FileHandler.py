@@ -31,3 +31,9 @@ class FileHandler:
         except InvalidSelectError as e:
             print(e)
             return self.SelectFile()
+
+    def saveFile(self, tasks):
+        with open(self.file, 'w') as file:
+            for task in tasks:
+                file.write(str(task) + '\n')
+        pass
