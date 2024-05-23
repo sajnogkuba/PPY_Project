@@ -1,12 +1,13 @@
-from Exceptions.InvalidDateError import InvalidDateError
 from Enums.Actions import Actions
 from Exceptions.InvalidSelectError import InvalidSelectError
 
 
 def printWelcomeMessage() -> None:
     """
-    Prints the welcome message for the Task Management System.
-    This function displays the name and purpose of the application, formatted with a decorative banner.
+    Prints a welcome message for the Task Management System.
+
+    Returns:
+        None
     """
     print("\n ================================== TASKS MANAGER ==================================")
     print("   Welcome to Task Management System! An application to help you manage your tasks.")
@@ -16,17 +17,12 @@ def printWelcomeMessage() -> None:
 
 class UserInterface:
     """
-     A class to manage user interactions within the Task Management System.
+    UserInterface class for interacting with the Task Management System.
 
-     Attributes:
-         actions_count (int): The number of available actions to the user.
-         ACTIONS (dict): A dictionary mapping action numbers to descriptions.
-
-     Methods:
-         __init__(actions_count: int): Initializes a new UserInterface instance.
-         isCorrectSelection(user_input: int): Checks if the user's choice is valid.
-         selectAction() -> int: Prompts the user to select an action and validates it.
-     """
+    Attributes:
+        ACTIONS (dict): Dictionary mapping action numbers to action descriptions.
+        actions_count (int): Total number of available actions.
+    """
     ACTIONS = {Actions.ADD_TASK.value: "Add Task",
                Actions.DELETE_TASK.value: "Delete Task",
                Actions.EDIT_TASK.value: "Edit Task",
@@ -39,18 +35,22 @@ class UserInterface:
 
     def __init__(self):
         """
-        Initializes a new UserInterface instance with a specified number of actions.
+        Initializes an instance of UserInterface.
         """
         self.actions_count = len(self.ACTIONS)
         pass
 
     def isCorrectSelection(self, user_input: int) -> None:
         """
-        Checks if the provided user input corresponds to a valid action number
-        Parameters:
-            user_input (int): The action number entered by the user
+        Checks if the user's selection is correct.
+
+        Args:
+            user_input (int): User's selection.
+
         Raises:
-            InvalidDateError: If the input is not a valid action number.
+            InvalidSelectError: If the selection is not valid.
+        Returns:
+            None
         """
         if user_input not in self.ACTIONS:
             raise InvalidSelectError(f"Invalid selection: you can chose from 1 to {self.actions_count}")
@@ -58,13 +58,13 @@ class UserInterface:
 
     def selectAction(self, file: str) -> Actions:
         """
-        Prompts the user to select an action from the available options and validates the selection
-        Parameters:
-            file (str): The path to the file with tasks which is selected at this moment
+        Prompts the user to select an action.
+
+        Args:
+            file (str): Name of the file being worked on.
+
         Returns:
-            int: The validated action number chosen by the user
-        Raises:
-            InvalidDateError: If the input is not a valid integer or out of the allowed range.
+            Actions: The selected action.
         """
         print(f"\n   Working on: {file}\n   What would you like to do?")
         for action_number in range(1, self.actions_count + 1):
