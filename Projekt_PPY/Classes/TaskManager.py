@@ -123,6 +123,7 @@ class TaskManager:
                     result = self.filterByPriority()
                     pass
                 case 2:
+                    result = self.filterByCompleteDate()
                     pass
                 case 3:
                     result = self.filterByStatus()
@@ -230,6 +231,24 @@ class TaskManager:
         priority = self.choosePriority()
         for task in self.tasks:
             if task.priority == priority:
+                result.append(task)
+        return result
+        pass
+
+    def filterByCompleteDate(self) -> list:
+        result = list()
+        date_format = "%d-%m-%Y"
+        input_date_str = input("   Enter the date (DD-MM-YYYY): ")
+        try:
+            try:
+                date_obj = datetime.strptime(input_date_str, date_format)
+            except ValueError:
+                raise InvalidDateError("Date format does not match format (DD-MM-YYYY).")
+        except InvalidDateError as e:
+            print(f"   {e.message}. Please try again.")
+            return self.filterByCompleteDate()
+        for task in self.tasks:
+            if task.created_at.date() == date_obj.date():
                 result.append(task)
         return result
         pass
